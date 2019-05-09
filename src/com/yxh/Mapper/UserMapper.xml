@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxh.Mapper.UserMapper">
+<select id="checkAdminLogin" parameterType="Admin" resultType="Admin">
+SELECT * from admin WHERE A_mobile=#{mobile} AND A_pwd=#{password} and a_state !='0'
+</select>
+<select id="checkTeacherLogin" parameterType="Teacher" resultType="Teacher">
+SELECT * from teacher WHERE T_mobile=#{mobile} AND T_pwd=#{password} and t_state !='0'
+</select>
+<select id="getStudentList" parameterType="Student" resultType="Student">
+SELECT * from student order by s_create desc
+</select>
+<select id="getTeacherList" parameterType="Teacher" resultType="Teacher">
+SELECT * from teacher order by t_create desc
+</select>
+<select id="getAdminList" parameterType="Admin" resultType="Admin">
+SELECT * from admin order by a_create desc
+</select>
+<select id="checkStudentMobile" parameterType="String" resultType="int">
+SELECT count(*) from student WHERE S_mobile = #{mobile}
+</select>
+<select id="checkStudentEmail" parameterType="String" resultType="int">
+SELECT count(*) from student WHERE S_EMAIL = #{email}
+</select>
+<insert id="studentAdd" parameterType="Student">
+INSERT INTO student(s_num,s_fname,s_name,s_sex,s_mobile,s_email,s_pwd,s_qnum,s_col,s_sub,s_create,s_update,s_state,s_img) VALUES(#{s_num},#{s_Fname},#{s_name},#{s_sex},#{s_mobile},#{s_email},#{s_pwd},#{s_qnum},#{s_col},#{s_sub},#{s_create},#{s_update},#{s_state},#{s_img})
+</insert>
+<select id="getStudentById" parameterType="String" resultType="student">
+SELECT * from student WHERE S_num=#{id}
+</select>
+<select id="getTeacherById" parameterType="String" resultType="teacher">
+SELECT * from teacher WHERE T_num=#{id}
+</select>
+<select id="getAdminById" parameterType="String" resultType="admin">
+SELECT * from admin WHERE A_num=#{id}
+</select>
+<update id="studentUpdate" parameterType="Student">
+update student set s_fname=#{s_Fname},s_name=#{s_name},s_sex=#{s_sex},s_mobile=#{s_mobile},s_email=#{s_email},s_qnum=#{s_qnum},s_col=#{s_col},s_sub=#{s_sub},s_update=#{s_update} where s_num=#{s_num}
+</update>
+<update id="teacherUpdate" parameterType="Teacher">
+update teacher set t_fname=#{t_Fname},t_name=#{t_name},t_sex=#{t_sex},t_mobile=#{t_mobile},t_email=#{t_email},t_qnum=#{t_qnum},t_col=#{t_col},t_sub=#{t_sub},t_update=#{t_update} where t_num=#{t_num}
+</update>
+<update id="adminUpdate" parameterType="Admin">
+update admin set a_fname=#{a_Fname},a_name=#{a_name},a_sex=#{a_sex},a_mobile=#{a_mobile},a_email=#{a_email},a_qnum=#{a_qnum},a_col=#{a_col},a_sub=#{a_sub},a_update=#{a_update} where a_num=#{a_num}
+</update>
+<select id="checkTeacherMobile" parameterType="String" resultType="int">
+SELECT count(*) from teacher WHERE T_mobile = #{mobile}
+</select>
+<select id="checkAdminMobile" parameterType="String" resultType="int">
+SELECT count(*) from admin WHERE A_mobile = #{mobile}
+</select>
+<select id="checkTeacherEmail" parameterType="String" resultType="int">
+SELECT count(*) from teacher WHERE T_EMAIL = #{email}
+</select>
+<select id="checkAdminEmail" parameterType="String" resultType="int">
+SELECT count(*) from admin WHERE A_EMAIL = #{email}
+</select>
+<update id="resetStudentPwd" parameterType="Student">
+update student set s_pwd = #{s_pwd} where s_num = #{s_num}
+</update>
+<update id="resetTeacherPwd" parameterType="Teacher">
+update teacher set t_pwd = #{t_pwd} where t_num = #{t_num}
+</update>
+<update id="resetAdminPwd" parameterType="Admin">
+update admin set a_pwd = #{a_pwd} where a_num = #{a_num}
+</update>
+<update id="statusStudent" parameterType="Student">
+update student set s_state = #{s_state} where s_num = #{s_num}
+</update>
+<update id="statusTeacher" parameterType="Teacher">
+update teacher set t_state = #{t_state} where t_num = #{t_num}
+</update>
+<update id="statusAdmin" parameterType="Admin">
+update admin set a_state = #{a_state} where a_num = #{a_num}
+</update>
+<insert id="adminAdd" parameterType="Admin">
+INSERT INTO admin(a_num,a_fname,a_name,a_sex,a_mobile,a_email,a_pwd,a_qnum,a_col,a_sub,a_create,a_update,a_state,a_img) VALUES(#{a_num},#{a_Fname},#{a_name},#{a_sex},#{a_mobile},#{a_email},#{a_pwd},#{a_qnum},#{a_col},#{a_sub},#{a_create},#{a_update},#{a_state},#{a_img})
+</insert>
+<insert id="teacherAdd" parameterType="Teacher">
+INSERT INTO teacher(t_num,t_fname,t_name,t_sex,t_mobile,t_email,t_pwd,t_qnum,t_col,t_sub,t_create,t_update,t_state,t_img) VALUES(#{t_num},#{t_Fname},#{t_name},#{t_sex},#{t_mobile},#{t_email},#{t_pwd},#{t_qnum},#{t_col},#{t_sub},#{t_create},#{t_update},#{t_state},#{t_img})
+</insert>
+<select id="getAllCourse" resultType="Course">
+SELECT t.T_NAME T_NAME,c.C_NAME C_NAME,c.C_IMG C_IMG,c.C_NUM C_NUM,c.c_create c_create,c.c_update c_update,c.c_state c_state,c.c_opri c_opri,c.c_npri c_npri,c.state state from teacher t,course c WHERE t.t_num = c.t_num and state !='5' ORDER BY c_create desc
+</select>
+<select id="getAllCourseTeacher" parameterType="String" resultType="Course">
+SELECT t.T_NAME T_NAME,c.C_NAME C_NAME,c.C_IMG C_IMG,c.C_NUM C_NUM,c.c_create c_create,c.c_update c_update,c.c_state c_state,c.c_opri c_opri,c.c_npri c_npri,c.state state from teacher t,course c WHERE t.t_num = c.t_num and c.t_num = #{t_num} and state !='5' ORDER BY c_create desc 
+</select>
+<select id="getAllTeacher" resultType="Teacher">
+select * from teacher where t_state = '1'
+</select>
+<select id="getCountofStudent" resultType="int">
+SELECT COUNT(*) from student where s_state ='1'
+</select>
+<select id="getDayCountofStudent" resultType="int">
+SELECT COUNT(*) from student where year(s_create)= year(NOW()) and DAYOFYEAR(s_create)=DAYOFYEAR(NOW()) and s_state ='1'
+</select>
+<select id="getCountofTeacher" resultType="int">
+SELECT COUNT(*) from teacher where t_state ='1'
+</select>
+<select id="getDayCountofTeacher" resultType="int">
+SELECT COUNT(*) from teacher where year(t_create)= year(NOW()) and DAYOFYEAR(t_create)=DAYOFYEAR(NOW()) and t_state ='1'
+</select>
+<select id="getCountofCourse" resultType="int">
+SELECT COUNT(*) from course where state ='1'
+</select>
+<select id="getDayCountofCourse" resultType="int">
+SELECT COUNT(*) from course where year(c_create)= year(NOW()) and DAYOFYEAR(c_create)=DAYOFYEAR(NOW()) and state ='1'
+</select>
+<select id="getCountofBook" resultType="int">
+SELECT COUNT(*) from book where b_state ='1'
+</select>
+<select id="getDayCountofBook" resultType="int">
+SELECT COUNT(*) from book where year(b_crdate)= year(NOW()) and DAYOFYEAR(b_crdate)=DAYOFYEAR(NOW()) and b_state ='1'
+</select>
+<insert id="courseAdd" parameterType="Course">
+INSERT INTO course(c_num,c_name,c_ind,c_state,t_num,c_opri,c_npri,c_plan,c_img,c_cadmin,c_create,c_update,state) VALUES(#{c_num},#{c_name},#{c_ind},#{c_state},#{t_num},#{c_opri},#{c_npri},#{c_plan},#{c_img},#{c_cadmin},#{c_create},#{c_update},#{state})
+</insert>
+<insert id="courseAddTeacher" parameterType="Course">
+INSERT INTO course(c_num,c_name,c_ind,c_state,t_num,c_opri,c_npri,c_plan,c_img,c_create,c_update,state) VALUES(#{c_num},#{c_name},#{c_ind},#{c_state},#{t_num},#{c_opri},#{c_npri},#{c_plan},#{c_img},#{c_create},#{c_update},#{state})
+</insert>
+<select id="getSuggestionList" resultType="Suggestion">
+SELECT * from suggestion order by su_create desc
+</select>
+<update id="statusCourse" parameterType="Course">
+update course set state = #{state} where c_num = #{c_num}
+</update>
+<select id="getCourseById" parameterType="String" resultType="Course">
+SELECT t.T_NAME T_NAME,t.t_num t_num,c.C_NAME C_NAME,c.C_IND C_IND,c.C_IMG C_IMG,c.C_NUM C_NUM,c.c_create c_create,c.c_update c_update,c.c_state c_state,c.c_opri c_opri,c.c_npri c_npri,c.state state,c.c_plan c_plan from teacher t,course c WHERE t.t_num = c.t_num and c.c_num = #{id} 
+</select>
+<update id="courseUpdate" parameterType="Course">
+update course set c_name = #{c_name},c_ind = #{c_ind},c_state = #{c_state},c_opri = #{c_opri},c_npri = #{c_npri},c_plan = #{c_plan},c_uadmin = #{c_uadmin},c_update = #{c_update} where c_num = #{c_num}
+</update>
+<update id="courseUpdateTeacher" parameterType="Course">
+update course set c_name = #{c_name},c_ind = #{c_ind},c_state = #{c_state},c_opri = #{c_opri},c_npri = #{c_npri},c_plan = #{c_plan},c_update = #{c_update} where c_num = #{c_num}
+</update>
+<update id="editCourseImg" parameterType="Course">
+update course set c_img = #{c_img},c_uadmin = #{c_uadmin},c_update = #{c_update} where c_num = #{c_num}
+</update>
+<update id="editCourseImgTeacher" parameterType="Course">
+update course set c_img = #{c_img},c_update = #{c_update} where c_num = #{c_num}
+</update>
+<insert id="addCourseVideo" parameterType="Video">
+INSERT INTO video(v_num,c_num,t_num,v_name,v_img,v_messag,v_create,v_update,v_type) VALUES(#{v_num},#{c_num},#{t_num},#{v_name},#{v_img},#{v_messag},#{v_create},#{v_update},#{v_type})
+</insert>
+<insert id="addCourseBook" parameterType="Book">
+INSERT INTO book(b_num,c_num,t_num,b_name,b_loc,b_crdate,b_update,b_state) VALUES(#{b_num},#{c_num},#{t_num},#{b_name},#{b_loc},#{b_crdate},#{b_update},#{b_state})
+</insert>
+<insert id="addCourseVideoTeacher" parameterType="Video">
+INSERT INTO video(v_num,c_num,t_num,v_name,v_img,v_messag,v_create,v_update,v_type) VALUES(#{v_num},#{c_num},#{t_num},#{v_name},#{v_img},#{v_messag},#{v_create},#{v_update},#{v_type})
+</insert>
+<insert id="addCourseBookTeacher" parameterType="Book">
+INSERT INTO book(b_num,c_num,t_num,b_name,b_loc,b_crdate,b_update,b_state) VALUES(#{b_num},#{c_num},#{t_num},#{b_name},#{b_loc},#{b_crdate},#{b_update},#{b_state})
+</insert>
+<select id="getAllVideo" resultType="Video">
+select t.t_name t_name ,c.c_name,v.v_num v_num,v.v_name v_name ,v.v_img v_img ,v.v_messag v_messag ,v.v_type v_type from teacher t,course c,video v where v.c_num = c.c_num and v.t_num = t.t_num and v.v_type != '5' order by v_name
+</select>
+<select id="getAllVideoTeacher" parameterType="String" resultType="Video">
+select t.t_name t_name ,c.c_name,v.v_num v_num,v.v_name v_name ,v.v_img v_img ,v.v_messag v_messag ,v.v_type v_type from teacher t,course c,video v where v.c_num = c.c_num and v.t_num = t.t_num and v.t_num = #{num} and v.v_type != '5' order by v_name
+</select>
+<update id="statusVideo" parameterType="Video">
+update video set v_type = #{v_type} where v_num = #{v_num}
+</update>
+<select id="getAllBook" resultType="Book">
+select t.t_name t_name ,c.c_name c_name,b.b_num b_num,b.b_name b_name ,b.b_loc b_loc,b.b_state b_state from teacher t,course c,book b where b.c_num = c.c_num and b.t_num = t.t_num and b.b_state != '5' order by b_name
+</select>
+<select id="getAllBookTeacher" resultType="Book">
+select t.t_name t_name ,c.c_name,b.b_num b_num,b.b_name b_name ,b.b_loc b_loc,b.b_state b_state from teacher t,course c,book b where b.c_num = c.c_num and b.t_num = t.t_num and b.t_num = #{num} and b.b_state != '5' order by b_name
+</select>
+<update id="statusBook" parameterType="Book">
+update book set b_state = #{b_state} where b_num = #{b_num}
+</update>
+</mapper >
